@@ -6,7 +6,9 @@ namespace BigInt
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Benc benc");
+            BigInt bigInt = new BigInt("12345");
+
+            Console.WriteLine(bigInt);
         }
     }
 }
