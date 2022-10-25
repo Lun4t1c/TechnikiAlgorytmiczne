@@ -13,6 +13,7 @@ namespace BigInt
         {
             #region Properties
             public int Value { get; set; }
+            public Node Previous { get; set; } = null;
             public Node Next { get; set; } = null;
             #endregion
 
@@ -29,6 +30,7 @@ namespace BigInt
 
         #region Properties
         private Node Head { get; set; } = null;
+        private Node Tail { get; set; } = null;
         #endregion
 
 
@@ -39,7 +41,7 @@ namespace BigInt
             Array.Reverse(tempArray);
 
             foreach (char c in tempArray)
-                AddDigitInFront(int.Parse(c.ToString()));
+                AddDigitInBack(int.Parse(c.ToString()));
         }
 
         public BigInt()
@@ -57,15 +59,32 @@ namespace BigInt
             this.Head = NewHead;
         }
 
+        private void AddDigitInBack(int digit)
+        {
+            Node NewTail = new Node(digit);
+
+            if (this.Head == null)
+            {
+                this.Head = NewTail;
+                this.Tail = NewTail;
+            }
+            else
+            {
+                this.Tail.Next = NewTail;
+                NewTail.Previous = this.Tail;
+                this.Tail = NewTail;
+            }
+        }
+
         override public string ToString()
         {
             string result = "";
-            Node walker = this.Head;
+            Node walker = this.Tail;
 
             while (walker != null)
             {
                 result += walker.Value.ToString();
-                walker = walker.Next;
+                walker = walker.Previous;
             }
 
             return result;
@@ -73,7 +92,26 @@ namespace BigInt
 
         public void AddBigInt(BigInt value)
         {
-            throw new NotImplementedException();
+            int memory = 0;
+            Node walker_a = this.Head;
+            Node walker_b = value.Head;
+
+            while (walker_a != null && walker_b != null)
+            {
+                walker_a.Value += walker_b.Value + memory;
+                memory = 0;
+                while (walker_a.Value >= 10)
+                {
+                    walker_a.Value -= 10;
+                    memory++;
+                }
+
+                walker_a = walker_a.Next;
+                walker_b = walker_b.Next;
+            }
+
+            if (memory > 0)
+                this.AddDigitInBack(memory);
         }
 
         public void SubtractBigInt(BigInt value)

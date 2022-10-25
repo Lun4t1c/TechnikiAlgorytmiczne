@@ -9,6 +9,7 @@ namespace BigInt
             BigInt bigInt = new BigInt("12345");
 
             Console.WriteLine(bigInt);
+            Console.WriteLine(bigInt + new BigInt("92344"));
         }
     }
 }
