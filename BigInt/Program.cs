@@ -1,15 +1,16 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-namespace BigInt
+﻿
+namespace BigNumber
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            BigInt bigInt = new BigInt("12345");
+            BigNumber.isInDebugMode = true;
+            BigNumber bigNumber = new BigNumber("12345");
+            bigNumber /= new BigNumber("10");
 
-            Console.WriteLine(bigInt);
-            Console.WriteLine(bigInt + new BigInt("92344"));
+            Console.WriteLine(bigNumber);
+            bigNumber.DisplayLinks();
         }
     }
 }
