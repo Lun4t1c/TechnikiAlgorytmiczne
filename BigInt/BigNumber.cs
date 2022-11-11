@@ -19,7 +19,7 @@ namespace BigNumber
         {
             #region Properties
             /// Stored digit
-            public int Value { get; set; }
+            public short Value { get; set; }
             public Node Previous { get; set; } = null;
             public Node Next { get; set; } = null;
             #endregion
@@ -28,7 +28,7 @@ namespace BigNumber
             #region Constructor
             public Node(int value)
             {
-                Value = value;
+                Value = (short)value;
             }
             #endregion
 
@@ -41,7 +41,7 @@ namespace BigNumber
             /// <returns></returns>
             public int AddValue(int value)
             {
-                this.Value += value;
+                this.Value += (short)value;
                 int memory = 0;
 
                 while (this.Value >= 10)
@@ -110,9 +110,13 @@ namespace BigNumber
             else
                 isNegative = false;
 
-            // Array.Reverse(tempArray);
             for (; i < tempArray.Length; i++)
+            {
+                if (!char.IsDigit(tempArray[i])) 
+                    throw new Exception($"Non-digit character in string: '{tempArray[i]}' at index {i}");
+
                 AddDigitInFront(int.Parse(tempArray[i].ToString()));
+            }
 
             if (isNegative)
                 AddDigitInFront(-1);
@@ -257,6 +261,14 @@ namespace BigNumber
             this.Head.Value *= -1;
         }
 
+        private void SetSign(bool isNegative)
+        {
+            if (isNegative)
+                this.Head.Value = -1;
+            else
+                this.Head.Value = 1;
+        }
+
         /// <summary>
         /// Remove all <class cref="Node"></class> references and set <property cref="Head"></property>
         /// and <property cref="Tail"></property> to null.
@@ -314,6 +326,7 @@ namespace BigNumber
         public void AddBigInt(BigNumber value)
         {            
             short negatives = 0;
+            BigNumber tempBigNumber;
             if (this.isNegative) negatives++;
             if (value.isNegative) negatives++;
 
@@ -352,14 +365,34 @@ namespace BigNumber
                             memory = this.Tail.AddValue(memory);
                         }
                     }
-
                     break;
+
 
                 case 1: // one is negative number
+                    if (value.isNegative)
+                    {
+                        tempBigNumber = new BigNumber(value);
+                        tempBigNumber.InvertSign();
+                        this.SubtractBigInt(tempBigNumber);
+                    }
+                    else
+                    {
+                        tempBigNumber = new BigNumber(value);
+                        this.InvertSign();
+                        tempBigNumber.SubtractBigInt(this);
+                        this.Overwrite(tempBigNumber);
+                    }
                     break;
 
+
                 case 2: // both are negative numbers
+                    tempBigNumber = new BigNumber(value);
+                    this.InvertSign();
+                    tempBigNumber.InvertSign();
+                    this.AddBigInt(tempBigNumber);
+                    this.InvertSign();
                     break;
+
 
                 default:
                     throw new Exception("ERROR");
@@ -374,6 +407,7 @@ namespace BigNumber
         public void SubtractBigInt(BigNumber value)
         {
             short negatives = 0;
+            BigNumber tempBigNumber;
             if (this.isNegative) negatives++;
             if (value.isNegative) negatives++;
 
@@ -383,10 +417,14 @@ namespace BigNumber
                     int memory = 0;
                     Node walker_a = this.Head.Next;
                     Node walker_b = value.Head.Next;
+                    int digitsOffset = Math.Abs(this.NumberOfDigits - value.NumberOfDigits);
 
                     if (this < value)
                     {
-                        
+                        tempBigNumber = new BigNumber(this);
+                        this.Overwrite(value);
+                        this.SubtractBigInt(tempBigNumber);
+                        this.InvertSign();
                     }
                     else
                     {
@@ -394,25 +432,42 @@ namespace BigNumber
                         {
                             if (walker_a.Value < walker_b.Value)
                             {
-                                walker_a.Next.Value -= 10;
                                 walker_a.Value += 10;
+                                walker_a.Next.Value--;
                             }
-
                             walker_a.Value -= walker_b.Value;
 
                             walker_a = walker_a.Next;
                             walker_b = walker_b.Next;
                         }
                     }
-                    this.RemoveLeadingZeros();
 
+                    this.RemoveLeadingZeros();
                     break;
+
 
                 case 1: // one is negative number
+                    if (this.isNegative)
+                    {
+                        this.InvertSign();
+                        this.AddBigInt(value);
+                        this.InvertSign();
+                    }
+                    else
+                    {
+                        tempBigNumber = new BigNumber(value);
+                        tempBigNumber.InvertSign();
+                        this.AddBigInt(tempBigNumber);
+                    }
                     break;
 
+
                 case 2: // both are negative numbers
+                    this.InvertSign();
+                    this.AddBigInt(value);
+                    this.InvertSign();
                     break;
+
 
                 default:
                     throw new Exception("ERROR");
@@ -462,15 +517,19 @@ namespace BigNumber
             switch (negatives)
             {
                 case 0: // both are positive numbers
-                    
-
+                    this.SetSign(false);
                     break;
+
 
                 case 1: // one is negative number
+                    this.SetSign(true);
                     break;
 
+
                 case 2: // both are negative numbers
+                    this.SetSign(false);
                     break;
+
 
                 default:
                     throw new Exception("ERROR");
@@ -485,16 +544,14 @@ namespace BigNumber
         public void DivideBigInt(BigNumber value)
         {
             short negatives = 0;
+            BigNumber finalBigNumber = new BigNumber();
+            BigNumber tempBigNumber;
             if (this.isNegative) negatives++;
             if (value.isNegative) negatives++;
 
-
-
             switch (negatives)
             {
-                case 0: // both are positive numbers
-                    BigNumber finalBigNumber = new BigNumber();
-
+                case 0: // both are positive numbers                    
                     while (this > value)
                     {
                         this.SubtractBigInt(value);
@@ -505,9 +562,19 @@ namespace BigNumber
                     break;
 
                 case 1: // one is negative number
+                    tempBigNumber = new BigNumber(value);
+                    tempBigNumber.SetSign(false);
+                    this.SetSign(false);
+                    this.DivideBigInt(tempBigNumber);
+                    this.SetSign(true);
                     break;
 
                 case 2: // both are negative numbers
+                    tempBigNumber = new BigNumber(value);
+                    tempBigNumber.SetSign(false);
+                    this.SetSign(false);
+                    this.DivideBigInt(tempBigNumber);
+                    this.SetSign(false);
                     break;
 
                 default:
@@ -584,6 +651,16 @@ namespace BigNumber
             return a;
         }
 
+        public static BigNumber operator %(BigNumber a, BigNumber b)
+        {
+            BigNumber finalBigNumber = new BigNumber(a);
+
+            while (finalBigNumber > b)
+                finalBigNumber -= b;
+            
+            return finalBigNumber;
+        }
+
         public static BigNumber operator +(BigNumber a, string b)
         {
             a.AddBigInt(new BigNumber(b));
@@ -608,6 +685,17 @@ namespace BigNumber
             return a;
         }
 
+        public static BigNumber operator %(BigNumber a, string b)
+        {
+            BigNumber finalBigNumber = new BigNumber(a);
+            BigNumber tempBigNumber = new BigNumber(b);
+
+            while (finalBigNumber > b)
+                finalBigNumber -= tempBigNumber;
+
+            return finalBigNumber;
+        }
+
         public static BigNumber operator +(BigNumber a, int b)
         {
             a.AddBigInt(new BigNumber(b.ToString()));
@@ -630,7 +718,18 @@ namespace BigNumber
         {
             a.DivideBigInt(new BigNumber(b.ToString()));
             return a;
-        } 
+        }
+
+        public static BigNumber operator %(BigNumber a, int b)
+        {
+            BigNumber finalBigNumber = new BigNumber(a);
+            BigNumber tempBigNumber = new BigNumber(b.ToString());
+
+            while (finalBigNumber > b)
+                finalBigNumber -= tempBigNumber;
+
+            return finalBigNumber;
+        }
         #endregion
 
 
@@ -642,21 +741,21 @@ namespace BigNumber
             if (a.NumberOfDigits != b.NumberOfDigits)
                 return a.NumberOfDigits < b.NumberOfDigits;
 
-            Node walker_a = a.Head.Next;
-            Node walker_b = b.Head.Next;
+            Node walker_a = a.Tail;
+            Node walker_b = b.Tail;
 
-            while (walker_a != null && walker_b != null)
+            while (walker_a != a.Head && walker_b != b.Head)
             {
                 if (walker_a.Value != walker_b.Value)
                     return walker_a.Value < walker_b.Value;
 
-                walker_a = walker_a.Next;
-                walker_b = walker_b.Next;
+                walker_a = walker_a.Previous;
+                walker_b = walker_b.Previous;
             }
 
-            if (walker_a == null && walker_b == null) return false;
+            if (walker_a == a.Head && walker_b == b.Head) return false;
 
-            if (walker_a == null) return true;
+            if (walker_a == a.Head) return true;
             else return false;
         }
 
@@ -668,22 +767,32 @@ namespace BigNumber
             if (a.NumberOfDigits != b.NumberOfDigits)
                 return a.NumberOfDigits > b.NumberOfDigits;
 
-            Node walker_a = a.Head.Next;
-            Node walker_b = b.Head.Next;
+            Node walker_a = a.Tail;
+            Node walker_b = b.Tail;
 
-            while (walker_a != null && walker_b != null)
+            while (walker_a != a.Head && walker_b != b.Head)
             {
                 if (walker_a.Value != walker_b.Value)
                     return walker_a.Value > walker_b.Value;
 
-                walker_a = walker_a.Next;
-                walker_b = walker_b.Next;
+                walker_a = walker_a.Previous;
+                walker_b = walker_b.Previous;
             }
 
-            if (walker_a == null && walker_b == null) return false;
+            if (walker_a == a.Head && walker_b == b.Head) return false;
 
-            if (walker_a == null) return false;
+            if (walker_a == a.Head) return false;
             else return true;
+        }
+
+        public static implicit operator BigNumber(string value)
+        {
+            return new BigNumber(value);
+        }
+
+        public static implicit operator BigNumber(int value)
+        {
+            return new BigNumber(value.ToString());
         }
         #endregion
     }
