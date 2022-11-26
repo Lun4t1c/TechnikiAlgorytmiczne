@@ -14,10 +14,10 @@ namespace BigNumber
                 try
                 {
                     Console.Write("Podaj pierwszą liczbę:\n> ");
-                    a = new BigNumber(Console.ReadLine());
+                    a = Console.ReadLine();
 
                     Console.Write("Podaj drugą liczbę:\n> ");
-                    b = new BigNumber(Console.ReadLine());
+                    b = Console.ReadLine();
 
                     string choice = MenuPrompt();
 

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigInt", "BigInt\BigInt.csproj", "{DABD7D10-D2F1-4477-A8D7-A2CC57438BAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BigInt", "BigInt\BigInt.csproj", "{DABD7D10-D2F1-4477-A8D7-A2CC57438BAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortingProject", "SortingProject\SortingProject.csproj", "{0D93BFAB-BE14-4855-888E-F8047C7B85D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{DABD7D10-D2F1-4477-A8D7-A2CC57438BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DABD7D10-D2F1-4477-A8D7-A2CC57438BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DABD7D10-D2F1-4477-A8D7-A2CC57438BAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D93BFAB-BE14-4855-888E-F8047C7B85D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D93BFAB-BE14-4855-888E-F8047C7B85D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D93BFAB-BE14-4855-888E-F8047C7B85D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D93BFAB-BE14-4855-888E-F8047C7B85D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
