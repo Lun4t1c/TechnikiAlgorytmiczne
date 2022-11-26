@@ -20,6 +20,9 @@ namespace SortingProject
                         break;
 
                     case "2":
+                        Console.WriteLine();
+                        PerformSorts();
+                        Console.WriteLine();
                         break;
 
                     case "0":
@@ -39,7 +42,37 @@ namespace SortingProject
             Console.WriteLine("2. Perform sorts.");
             Console.WriteLine("0. Exit.");
 
+            Console.Write("> ");
             return Console.ReadLine();
+        }
+
+        private static void PerformSorts()
+        {
+            for (int i = 10; i < 100; i++)
+            {
+                Console.WriteLine();
+
+                Utilities.GenerateNewInputFile(i);
+                string sortedString = Utilities.ReadStringFromInputFile();
+
+                for (int j = 0; j < i; j++)
+                    Console.Write('-');
+                Console.WriteLine();
+
+                Console.WriteLine("Sorting:");
+                Console.WriteLine(sortedString);
+                Console.WriteLine();
+                
+                Console.WriteLine("Counting...");
+                Console.WriteLine(Sorts.Counting(sortedString.ToCharArray()));
+
+                Console.WriteLine();
+
+                Console.WriteLine("Radix...");
+                Console.WriteLine(Sorts.Radix(sortedString.ToCharArray()));                
+
+                Console.WriteLine();
+            }
         }
     }
 }
