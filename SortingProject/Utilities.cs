@@ -8,7 +8,7 @@ namespace SortingProject
 {
     internal static class Utilities
     {
-        public static string INPUT_FILE_PATH { get; set; } = "InputFile.txt";
+        public static string INPUT_FILE_PATH = "InputFile.txt";
         public readonly static char[] Alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
 
         public static void GenerateNewInputFile(int wordLength)

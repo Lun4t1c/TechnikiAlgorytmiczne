@@ -5,6 +5,9 @@ namespace SortingProject
 {
     class Program
     {
+        public static string REPORT_FILE_PATH = "ReportFile.txt";
+        public static string ReportString = "";
+
         public static void Main(string[] args)
         {
             while (true)
@@ -50,6 +53,8 @@ namespace SortingProject
         {
             for (int i = 10; i < 100; i++)
             {
+                ReportString += "i=" + i.ToString() + '\n';
+
                 Console.WriteLine();
                 Sorts.ResetCounters();
 
@@ -67,15 +72,20 @@ namespace SortingProject
                 Console.WriteLine("Counting...");
                 Console.WriteLine(Sorts.Counting(sortedString.ToCharArray()));
                 Console.WriteLine($"Operations: {Sorts.CountingOperations}");
+                ReportString += "counting=" + Sorts.CountingOperations + '\n';
 
                 Console.WriteLine();
 
                 Console.WriteLine("Radix...");
                 Console.WriteLine(Sorts.Radix(sortedString.ToCharArray()));
                 Console.WriteLine($"Operations: {Sorts.RadixOperations}");
+                ReportString += "radix=" + Sorts.RadixOperations + '\n';
 
                 Console.WriteLine();
+                ReportString += '\n';
             }
+
+            File.WriteAllText(REPORT_FILE_PATH, ReportString);
         }
     }
 }

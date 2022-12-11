@@ -93,7 +93,6 @@ namespace SortingProject
             for (int exp = 1; m / exp > 0; exp *= 10)
             {
                 output = Counting(output, exp);
-                RadixOperations++;
             }
 
             return output;
