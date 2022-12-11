@@ -51,6 +51,7 @@ namespace SortingProject
             for (int i = 10; i < 100; i++)
             {
                 Console.WriteLine();
+                Sorts.ResetCounters();
 
                 Utilities.GenerateNewInputFile(i);
                 string sortedString = Utilities.ReadStringFromInputFile();
@@ -65,11 +66,13 @@ namespace SortingProject
                 
                 Console.WriteLine("Counting...");
                 Console.WriteLine(Sorts.Counting(sortedString.ToCharArray()));
+                Console.WriteLine($"Operations: {Sorts.CountingOperations}");
 
                 Console.WriteLine();
 
                 Console.WriteLine("Radix...");
-                Console.WriteLine(Sorts.Radix(sortedString.ToCharArray()));                
+                Console.WriteLine(Sorts.Radix(sortedString.ToCharArray()));
+                Console.WriteLine($"Operations: {Sorts.RadixOperations}");
 
                 Console.WriteLine();
             }
