@@ -5,7 +5,9 @@ VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BigInt", "BigInt\BigInt.csproj", "{DABD7D10-D2F1-4477-A8D7-A2CC57438BAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortingProject", "SortingProject\SortingProject.csproj", "{0D93BFAB-BE14-4855-888E-F8047C7B85D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SortingProject", "SortingProject\SortingProject.csproj", "{0D93BFAB-BE14-4855-888E-F8047C7B85D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSTTreeProject", "BSTTreeProject\BSTTreeProject.csproj", "{4E77B969-2FE6-4224-B81F-B809DF0BBD66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0D93BFAB-BE14-4855-888E-F8047C7B85D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D93BFAB-BE14-4855-888E-F8047C7B85D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D93BFAB-BE14-4855-888E-F8047C7B85D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E77B969-2FE6-4224-B81F-B809DF0BBD66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E77B969-2FE6-4224-B81F-B809DF0BBD66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E77B969-2FE6-4224-B81F-B809DF0BBD66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E77B969-2FE6-4224-B81F-B809DF0BBD66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
