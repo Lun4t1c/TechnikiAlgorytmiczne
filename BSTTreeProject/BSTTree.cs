@@ -50,7 +50,7 @@ namespace BSTTreeProject
             while (Root != null)
             {
                 previousNode = Root;
-                if (Root.Word > word)
+                if (CompareStringsAlphabetically(Root.Word, word))
                 {
 
                 }
@@ -76,9 +76,9 @@ namespace BSTTreeProject
 
         private bool CompareStringsAlphabetically(string s1, string s2)
         {
-            bool result = false;
+            throw new NotImplementedException();
 
-
+            bool result = false;            
 
             return result;
         }
