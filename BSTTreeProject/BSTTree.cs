@@ -38,33 +38,77 @@ namespace BSTTreeProject
 
 
         #region Methods
+        public void PrintOut()
+        {
+            _printNode(Root, 0);
+        }
+
         public void Add(string word)
-        {            
+        {
             if (Root == null)
             {
                 Root = new Node(word);
                 return;
             }
+
+            Node walker = Root;
             Node previousNode = Root;
 
-            while (Root != null)
+            while (walker != null)
             {
-                previousNode = Root;
-                if (CompareStringsAlphabetically(Root.Word, word))
+                previousNode = walker;
+                if (_isStringAlphabeticallyFirst(walker.Word, word))
                 {
-
+                    previousNode = walker;
+                    walker = walker.ChildLeft;
+                }
+                else
+                {
+                    previousNode = walker;
+                    walker = walker.ChildRight;
                 }
             }
+
+            if (_isStringAlphabeticallyFirst(previousNode.Word, word))
+                previousNode.ChildLeft = new Node(word);
+            else
+                previousNode.ChildRight = new Node(word);
         }
 
-        public void Find(string word)
+        public bool Find(string word)
         {
+            bool result = false;
 
+            Node walker = Root;
+            while (walker != null)
+            {
+                if (walker.Word == word) 
+                    return true;
+
+                if (_isStringAlphabeticallyFirst(walker.Word, word))
+                    walker = walker.ChildLeft;
+                else
+                    walker = walker.ChildRight;
+            }
+
+            return result;
         }
 
         public void Remove(string word)
         {
+            Node walker = Root;
+            Node previousNode = null;
 
+            while (walker != null && walker.Word != word)
+            {
+                previousNode = walker;
+                if (_isStringAlphabeticallyFirst(walker.Word, word))
+                    walker = walker.ChildLeft;
+                else
+                    walker = walker.ChildRight;
+            }
+
+            // TODO further algorithm
         }
 
         public int FlushNumberOfOperations()
@@ -74,13 +118,23 @@ namespace BSTTreeProject
             return temp;
         }
 
-        private bool CompareStringsAlphabetically(string s1, string s2)
+        private bool _isStringAlphabeticallyFirst(string s1, string s2)
         {
-            throw new NotImplementedException();
+            if (string.Compare(s1, s2) > 0) 
+                return true;
+            else 
+                return false;
+        }
 
-            bool result = false;            
-
-            return result;
+        private void _printNode(Node node, int level)
+        {            
+            if (node == null) return;
+            else
+            {
+                Console.WriteLine($"{level} - {node.Word}");
+                _printNode(node.ChildLeft, level + 1);
+                _printNode(node.ChildRight, level + 1);
+            }
         }
         #endregion
     }
