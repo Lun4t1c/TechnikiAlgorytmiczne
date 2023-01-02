@@ -47,6 +47,8 @@ namespace BSTTreeProject
         {
             if (Root == null)
             {
+                NumberOfOperations++;
+
                 Root = new Node(word);
                 return;
             }
@@ -56,6 +58,8 @@ namespace BSTTreeProject
 
             while (walker != null)
             {
+                NumberOfOperations++;
+
                 previousNode = walker;
                 if (_isStringAlphabeticallyFirst(walker.Word, word))
                 {
@@ -69,6 +73,7 @@ namespace BSTTreeProject
                 }
             }
 
+            NumberOfOperations++;
             if (_isStringAlphabeticallyFirst(previousNode.Word, word))
                 previousNode.ChildLeft = new Node(word);
             else
@@ -82,6 +87,8 @@ namespace BSTTreeProject
             Node walker = Root;
             while (walker != null)
             {
+                NumberOfOperations++;
+
                 if (walker.Word == word) 
                     return true;
 
@@ -101,6 +108,8 @@ namespace BSTTreeProject
 
             while (walker != null && walker.Word != word)
             {
+                NumberOfOperations++;
+
                 previousNode = walker;
                 if (_isStringAlphabeticallyFirst(walker.Word, word))
                     walker = walker.ChildLeft;
