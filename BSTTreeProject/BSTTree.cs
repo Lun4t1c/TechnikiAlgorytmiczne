@@ -43,6 +43,11 @@ namespace BSTTreeProject
             _printNode(Root, 0);
         }
 
+        public int GetHeight()
+        {
+            return _findHeight(Root);
+        }
+
         public void Add(string word)
         {
             if (Root == null)
@@ -103,21 +108,61 @@ namespace BSTTreeProject
 
         public void Remove(string word)
         {
-            Node walker = Root;
-            Node previousNode = null;
+            _removeWord(Root, word);
+        }
 
-            while (walker != null && walker.Word != word)
+        private Node _removeWord(Node node, string word)
+        {
+            NumberOfOperations++;
+            if (node == null) return node;
+
+            NumberOfOperations++;
+            if (_isStringAlphabeticallyFirst(node.Word, word))
             {
                 NumberOfOperations++;
-
-                previousNode = walker;
-                if (_isStringAlphabeticallyFirst(walker.Word, word))
-                    walker = walker.ChildLeft;
-                else
-                    walker = walker.ChildRight;
+                node.ChildRight = _removeWord(node.ChildRight, word);
             }
+            else if (_isStringAlphabeticallyFirst(word, node.Word))
+            {
+                NumberOfOperations++;
+                node.ChildLeft = _removeWord(node.ChildLeft, word);
+            }
+            else
+            {
+                Node temp = null;
 
-            // TODO further algorithm
+                NumberOfOperations++;
+                if (node.ChildLeft == null)
+                {
+                    temp = node.ChildRight;
+                    node = null;
+                    return temp;
+                }
+                else if (node.ChildRight == null)
+                {
+                    NumberOfOperations++;
+                    temp = node.ChildLeft;
+                    node = null;
+                    return temp;
+                }
+
+                temp = _minValueNode(node.ChildRight);
+
+                node.Word = temp.Word;
+
+                node.ChildRight = _removeWord(node.ChildRight, temp.Word);
+            }
+            return node;
+        }
+
+        private Node _minValueNode(Node node)
+        {
+            Node walker = node;
+
+            while (walker.ChildLeft != null)
+                walker = walker.ChildLeft;
+
+            return walker;
         }
 
         public int FlushNumberOfOperations()
@@ -144,6 +189,20 @@ namespace BSTTreeProject
                 _printNode(node.ChildLeft, level + 1);
                 _printNode(node.ChildRight, level + 1);
             }
+        }
+
+        private int _findHeight(Node node)
+        {
+            if (node == null)
+                return -1;
+
+            int lefth = _findHeight(node.ChildLeft);
+            int righth = _findHeight(node.ChildRight);
+
+            if (lefth > righth)
+                return lefth + 1;
+            else
+                return righth + 1;
         }
         #endregion
     }
