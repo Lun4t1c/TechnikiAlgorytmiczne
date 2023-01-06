@@ -74,7 +74,7 @@ namespace BSTTreeProject
                 Console.WriteLine($"averageOperationsDeleting: {averageOperationsDeleting}");
 
                 // ADD FILE CONTENT
-                fileContent += $"{amount};{averageOperationsInserting};{averageOperationsFinding};{averageOperationsDeleting};\n";
+                fileContent += $"{amount};{averageOperationsInserting};{averageOperationsFinding};{averageOperationsDeleting};{tree.GetHeight()};\n";
 
                 Console.WriteLine();
             }
