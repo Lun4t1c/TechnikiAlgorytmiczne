@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BSTTreeProject
 {
-    internal class BSTTree
+    internal class SplayTree
     {
         #region Node subclass
         private class Node
@@ -17,7 +17,7 @@ namespace BSTTreeProject
 
             public Node(string word)
             {
-                this.Word = word;
+                Word = word;
             }
         }
         #endregion
@@ -30,7 +30,7 @@ namespace BSTTreeProject
 
 
         #region Constructor
-        public BSTTree()
+        public SplayTree()
         {
 
         }
@@ -87,23 +87,12 @@ namespace BSTTreeProject
 
         public bool Find(string word)
         {
-            bool result = false;
+            Root = Splay(Root, word);
 
-            Node walker = Root;
-            while (walker != null)
-            {
-                NumberOfOperations++;
-
-                if (walker.Word == word) 
-                    return true;
-
-                if (_isStringAlphabeticallyFirst(walker.Word, word))
-                    walker = walker.ChildLeft;
-                else
-                    walker = walker.ChildRight;
-            }
-
-            return result;
+            if (Root.Word == word)
+                return true;
+            else
+                return false;
         }
 
         public void Remove(string word)
@@ -174,14 +163,14 @@ namespace BSTTreeProject
 
         private bool _isStringAlphabeticallyFirst(string s1, string s2)
         {
-            if (string.Compare(s1, s2) > 0) 
+            if (string.Compare(s1, s2) > 0)
                 return true;
-            else 
+            else
                 return false;
         }
 
         private void _printNode(Node node, int level)
-        {            
+        {
             if (node == null) return;
             else
             {
@@ -203,6 +192,72 @@ namespace BSTTreeProject
                 return lefth + 1;
             else
                 return righth + 1;
+        }
+
+        private Node Splay(Node root, string word)
+        {
+            if (root == null || root.Word == word)
+                return root;
+
+            NumberOfOperations++;
+            if (_isStringAlphabeticallyFirst(root.Word, word))
+            {
+                if (root.ChildLeft == null) return root;
+
+                NumberOfOperations++;
+                if (_isStringAlphabeticallyFirst(root.ChildLeft.Word, word))
+                {
+                    root.ChildLeft.ChildLeft = Splay(root.ChildLeft.ChildLeft, word);
+                    root = _rotateRight(root);
+                }
+                else if (_isStringAlphabeticallyFirst(word, root.ChildLeft.Word))
+                {
+                    NumberOfOperations++;
+                    root.ChildLeft.ChildRight = Splay(root.ChildLeft.ChildRight, word);
+                    if (root.ChildLeft.ChildRight != null)
+                        root.ChildLeft = _rotateLeft(root.ChildLeft);
+                }
+
+                return (root.ChildLeft == null) ? root : _rotateRight(root);
+            }
+            else
+            {
+                NumberOfOperations++;
+                if (root.ChildRight == null) return root;
+
+                NumberOfOperations++;
+                if (_isStringAlphabeticallyFirst(root.ChildRight.Word, word))
+                {
+                    root.ChildRight.ChildLeft = Splay(root.ChildRight.ChildLeft, word);
+
+                    if (root.ChildRight.ChildLeft != null)
+                        root.ChildRight = _rotateRight(root.ChildRight);
+                }
+                else if (_isStringAlphabeticallyFirst(word, root.ChildRight.Word))
+                {
+                    NumberOfOperations++;
+                    root.ChildRight.ChildRight = Splay(root.ChildRight.ChildRight, word);
+                    root = _rotateLeft(root);
+                }
+
+                return (root.ChildRight == null) ? root : _rotateLeft(root);
+            }
+        }
+
+        private Node _rotateRight(Node node)
+        {
+            Node tempNode = node.ChildLeft;
+            node.ChildLeft = tempNode.ChildRight;
+            tempNode.ChildRight = node;
+            return tempNode;
+        }
+
+        private Node _rotateLeft(Node node)
+        {
+            Node tempNode = node.ChildRight;
+            node.ChildRight = tempNode.ChildLeft;
+            tempNode.ChildLeft = node;
+            return tempNode;
         }
         #endregion
     }

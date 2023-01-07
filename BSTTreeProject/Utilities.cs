@@ -15,6 +15,9 @@ namespace BSTTreeProject
         public const string FIRST_REPORT_FILE_PATH = "OperationsSet1.txt";
         public const string SECOND_REPORT_FILE_PATH = "OperationsSet2.txt";
         public const string THIRD_REPORT_FILE_PATH = "OperationsSet3.txt";
+        public const string FIRST_SPLAY_REPORT_FILE_PATH = "OperationsSetSplay1.txt";
+        public const string SECOND_SPLAY_REPORT_FILE_PATH = "OperationsSetSplay2.txt";
+        public const string THIRD_SPLAY_REPORT_FILE_PATH = "OperationsSetSplay3.txt";
 
         public static void TouchOperationFiles()
         {
