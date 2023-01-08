@@ -50,10 +50,9 @@ namespace BSTTreeProject
 
         public void Add(string word)
         {
+            NumberOfOperations++;
             if (Root == null)
-            {
-                NumberOfOperations++;
-
+            {                
                 Root = new Node(word);
                 return;
             }
@@ -120,7 +119,6 @@ namespace BSTTreeProject
 
         private Node _removeWord(Node node, string word)
         {
-            NumberOfOperations++;
             if (node == null) return node;
 
             NumberOfOperations++;

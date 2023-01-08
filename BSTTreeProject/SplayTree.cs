@@ -50,10 +50,9 @@ namespace BSTTreeProject
 
         public void Add(string word)
         {
+            NumberOfOperations++;
             if (Root == null)
             {
-                NumberOfOperations++;
-
                 Root = new Node(word);
                 return;
             }
